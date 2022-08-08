@@ -1,8 +1,12 @@
 import "./App.css";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline bg-torch-red">Hello world!</h1>
+    <div>
+      <Header />
+      <h1 className="text-3xl font-bold text-pale-custom">Hello world!</h1>
+    </div>
   );
 }
 
