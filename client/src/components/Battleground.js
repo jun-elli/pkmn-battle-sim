@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import PokemonStatusBar from "./battle-components/PokemonStatusBar";
 
 function Battleground() {
-  const [myPkmn, setMyPkmn] = useState({});
-  const [enemy, setEnemy] = useState({});
+  const [myPkmn, setMyPkmn] = useState(null);
+  const [enemy, setEnemy] = useState(null);
 
   useEffect(() => {
     fetchPkmns();
@@ -24,7 +24,9 @@ function Battleground() {
   return (
     <div className="bg-grey-custom grid grid-cols-6 grid-rows-4 h-screen place-items-stretch max-w-4xl mx-auto max-h-full">
       <div className="col-start-1 col-end-4 row-start-1 row-end-2 bg-green-300">
-        <PokemonStatusBar baseHp={enemy.stats[0].base_stat} exp={135} />
+        {enemy && (
+          <PokemonStatusBar baseHp={enemy.stats[0].base_stat} exp={135} />
+        )}
       </div>
       <div className="col-start-4 col-end-7 row-start-1 row-end-3 bg-green-600 ">
         02
@@ -33,7 +35,9 @@ function Battleground() {
         03
       </div>
       <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
-        <PokemonStatusBar baseHp={myPkmn.stats[0].base_stat} exp={135} />
+        {myPkmn && (
+          <PokemonStatusBar baseHp={myPkmn.stats[0].base_stat} exp={135} />
+        )}
       </div>
       <div className="bg-purple-500 col-start-1 col-end-5 row-start-4 row-end-5">
         05
