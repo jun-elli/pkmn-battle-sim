@@ -7,11 +7,9 @@ const calculateEV = (exp) => {
   return Math.sqrt(exp) / 4;
 };
 
-const calculateTotalHp = (base, exp) => {
-  let iv = calculateIV();
-  let ev = calculateEV(exp);
+const calculateTotalHp = (base, iv, ev, lvl) => {
   return Math.floor(
-    0.01 * (2 * base + iv + Math.floor(0.25 * ev) * 5) + 5 + 10
+    0.01 * (2 * base + iv + Math.floor(0.25 * ev) * lvl) + lvl + 10
   );
 };
 
@@ -47,10 +45,8 @@ const natures = [
   { name: "Quirky" },
 ];
 
-const calculateStats = (base, exp, lvl, nature, stat) => {
+const calculateStats = (base, iv, ev, lvl, nature, stat) => {
   // (floor(0.01 x (2 x Base + IV + floor(0.25 x EV)) x Level) + 5) x Nature
-  let iv = calculateIV();
-  let ev = calculateEV(exp);
 
   let natureEffect = natures[nature][stat] ? natures[nature][stat] : 1;
 

@@ -25,7 +25,7 @@ function Battleground() {
     <div className="bg-grey-custom grid grid-cols-6 grid-rows-4 h-screen place-items-stretch max-w-4xl mx-auto max-h-full">
       <div className="col-start-1 col-end-4 row-start-1 row-end-2 bg-green-300">
         {enemy && (
-          <PokemonStatusBar baseHp={enemy.stats[0].base_stat} exp={135} />
+          <PokemonStatusBar name={enemy.name} stats={enemy.stats} exp={135} />
         )}
       </div>
       <div className="col-start-4 col-end-7 row-start-1 row-end-3 bg-green-600 ">
@@ -36,7 +36,7 @@ function Battleground() {
       </div>
       <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
         {myPkmn && (
-          <PokemonStatusBar baseHp={myPkmn.stats[0].base_stat} exp={135} />
+          <PokemonStatusBar name={myPkmn.name} stats={myPkmn.stats} exp={135} />
         )}
       </div>
       <div className="bg-purple-500 col-start-1 col-end-5 row-start-4 row-end-5">
