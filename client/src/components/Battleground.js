@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PokemonStatusBar from "./battle-components/PokemonStatusBar";
+import ShowPokemonSprite from "./battle-components/ShowPokemonSprite";
 
 function Battleground() {
   const [myPkmn, setMyPkmn] = useState(null);
@@ -29,10 +30,10 @@ function Battleground() {
         )}
       </div>
       <div className="col-start-4 col-end-7 row-start-1 row-end-3 bg-green-600 ">
-        02
+        {enemy && <ShowPokemonSprite sprite={enemy.sprites.front_default} />}
       </div>
       <div className="bg-orange-500 col-start-1 col-end-4 row-start-2 row-end-4">
-        03
+        {enemy && <ShowPokemonSprite sprite={myPkmn.sprites.back_default} />}
       </div>
       <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
         {myPkmn && (
