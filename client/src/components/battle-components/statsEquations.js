@@ -56,10 +56,56 @@ const calculateStats = (base, iv, ev, lvl, nature, stat) => {
   );
 };
 
+const generatePokemon = (name, stats, exp, setterOg, setterMod) => {
+  let temp = []; //hp, atk, def, spatk, spdef, spd
+
+  const nature = generateRandomNature();
+  const iv = calculateIV();
+  const ev = calculateEV(exp);
+  const lvl = 5;
+
+  for (const stat of stats) {
+    temp.push(stat.base_stat);
+  }
+
+  setterOg({
+    name: name,
+    lvl: lvl,
+    exp: exp,
+    hp: calculateTotalHp(temp[0], iv, ev, lvl),
+    atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
+    def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
+    spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
+    spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
+    spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
+    acc: 100,
+    nature: nature,
+    iv: iv,
+    ev: ev,
+  });
+
+  setterMod({
+    name: name,
+    lvl: lvl,
+    exp: exp,
+    hp: calculateTotalHp(temp[0], iv, ev, lvl),
+    atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
+    def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
+    spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
+    spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
+    spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
+    acc: 100,
+    nature: nature,
+    iv: iv,
+    ev: ev,
+  });
+};
+
 export {
   calculateIV,
   calculateEV,
   calculateTotalHp,
   calculateStats,
   generateRandomNature,
+  generatePokemon,
 };

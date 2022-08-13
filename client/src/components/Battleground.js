@@ -1,50 +1,82 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConsoleMenu from "./battle-components/ConsoleMenu";
 import PokemonStatusBar from "./battle-components/PokemonStatusBar";
 import ShowPokemonSprite from "./battle-components/ShowPokemonSprite";
+import { generatePokemon } from "./battle-components/statsEquations";
+
+export const PokemonContext = React.createContext();
 
 function Battleground() {
-  const [myPkmn, setMyPkmn] = useState(null);
+  // raw data from API
+  const [myPokemon, setMyPokemon] = useState(null);
   const [enemy, setEnemy] = useState(null);
+  // pokemon stats modified according to lvl and combat exp
+  const [pokemonWithStats, setPokemonWithStats] = useState({});
+  const [pokemonWithModStats, setPokemonWithModStats] = useState({});
+  const [enemyWithStats, setEnemyWithStats] = useState({});
+  const [enemyWithModStats, setEnemyWithModStats] = useState({});
 
   useEffect(() => {
     fetchPkmns();
   }, []);
 
   const fetchPkmns = async () => {
-    const [torchicRes, bulbasaurRes] = await Promise.all([
+    const [myRes, enemyRes] = await Promise.all([
       fetch("https://pokeapi.co/api/v2/pokemon/255"),
       fetch("https://pokeapi.co/api/v2/pokemon/1"),
     ]);
 
-    const torchic = await torchicRes.json();
-    setMyPkmn(torchic);
-    const bulbasaur = await bulbasaurRes.json();
-    setEnemy(bulbasaur);
+    const myPkmn = await myRes.json();
+    setMyPokemon(myPkmn);
+    const enemyPkmn = await enemyRes.json();
+    setEnemy(enemyPkmn);
+    generatePokemon(
+      myPkmn.name,
+      myPkmn.stats,
+      135,
+      setPokemonWithStats,
+      setPokemonWithModStats
+    );
+    generatePokemon(
+      enemyPkmn.name,
+      enemyPkmn.stats,
+      135,
+      setEnemyWithStats,
+      setEnemyWithModStats
+    );
   };
 
   return (
-    <div className="bg-grey-custom grid grid-cols-6 grid-rows-4 h-screen place-items-stretch max-w-4xl mx-auto max-h-full">
-      <div className="col-start-1 col-end-4 row-start-1 row-end-2 bg-green-300">
-        {enemy && (
-          <PokemonStatusBar name={enemy.name} stats={enemy.stats} exp={135} />
-        )}
+    <PokemonContext.Provider
+      value={{
+        myPokemon,
+        enemy,
+        pokemonWithStats,
+        pokemonWithModStats,
+        enemyWithStats,
+        enemyWithModStats,
+      }}
+    >
+      <div className="bg-grey-custom grid grid-cols-6 grid-rows-4 h-screen place-items-stretch max-w-4xl mx-auto max-h-full">
+        <div className="col-start-1 col-end-4 row-start-1 row-end-2 bg-green-300">
+          {enemy && <PokemonStatusBar isEnemy={true} />}
+        </div>
+        <div className="col-start-4 col-end-7 row-start-1 row-end-3 bg-green-600 ">
+          {enemy && <ShowPokemonSprite sprite={enemy.sprites.front_default} />}
+        </div>
+        <div className="bg-orange-500 col-start-1 col-end-4 row-start-2 row-end-4">
+          {myPokemon && (
+            <ShowPokemonSprite sprite={myPokemon.sprites.back_default} />
+          )}
+        </div>
+        <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
+          {myPokemon && <PokemonStatusBar isEnemy={false} />}
+        </div>
+        <div className="bg-purple-500 col-start-1 col-end-7">
+          <ConsoleMenu />
+        </div>
       </div>
-      <div className="col-start-4 col-end-7 row-start-1 row-end-3 bg-green-600 ">
-        {enemy && <ShowPokemonSprite sprite={enemy.sprites.front_default} />}
-      </div>
-      <div className="bg-orange-500 col-start-1 col-end-4 row-start-2 row-end-4">
-        {enemy && <ShowPokemonSprite sprite={myPkmn.sprites.back_default} />}
-      </div>
-      <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
-        {myPkmn && (
-          <PokemonStatusBar name={myPkmn.name} stats={myPkmn.stats} exp={135} />
-        )}
-      </div>
-      <div className="bg-purple-500 col-start-1 col-end-7">
-        <ConsoleMenu />
-      </div>
-    </div>
+    </PokemonContext.Provider>
   );
 }
 
