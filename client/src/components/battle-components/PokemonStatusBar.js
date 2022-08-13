@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { PokemonContext } from "../Battleground";
-import { generatePokemon } from "./statsEquations";
 
 function PokemonStatusBar({ isEnemy }) {
   const [pkmnOg, setPkmnOg] = useState({});

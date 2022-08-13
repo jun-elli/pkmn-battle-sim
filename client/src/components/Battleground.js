@@ -72,7 +72,7 @@ function Battleground() {
         <div className="bg-orange-300 col-start-4 col-end-7 row-start-3 row-end-4">
           {myPokemon && <PokemonStatusBar isEnemy={false} />}
         </div>
-        <div className="bg-purple-500 col-start-1 col-end-7">
+        <div className="bg-purple-500 grid place-items-stretch col-start-1 col-end-7 row-start-4 row-end-5">
           <ConsoleMenu />
         </div>
       </div>
