@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ConsoleMenu from "./battle-components/ConsoleMenu";
 import PokemonStatusBar from "./battle-components/PokemonStatusBar";
 import ShowPokemonSprite from "./battle-components/ShowPokemonSprite";
 
@@ -40,10 +41,9 @@ function Battleground() {
           <PokemonStatusBar name={myPkmn.name} stats={myPkmn.stats} exp={135} />
         )}
       </div>
-      <div className="bg-purple-500 col-start-1 col-end-5 row-start-4 row-end-5">
-        05
+      <div className="bg-purple-500 col-start-1 col-end-7">
+        <ConsoleMenu />
       </div>
-      <div className="bg-purple-300 col-start-5 col-end-7">06</div>
     </div>
   );
 }
