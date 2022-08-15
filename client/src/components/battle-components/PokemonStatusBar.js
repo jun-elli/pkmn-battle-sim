@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { PokemonContext } from "../Battleground";
 
 function PokemonStatusBar({ isEnemy }) {
-  const [pokemon, setPokemon] = useState({});
+  const [pokemon, setPokemon] = useState(null);
 
   const { myPokemon, enemy } = useContext(PokemonContext);
 
@@ -19,7 +19,8 @@ function PokemonStatusBar({ isEnemy }) {
         <div>
           <div>LVL: {pokemon.lvl}</div>
           <div>
-            HP: {pokemon.hp} / {pokemon && pokemon.hp}
+            HP: {pokemon.stats.modified.hp} /{" "}
+            {pokemon && pokemon.stats.actual.hp}
           </div>
         </div>
       )}

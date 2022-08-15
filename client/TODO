@@ -1,2 +1,3 @@
-Fix latest moves function 
-    (should work according to generation, right know ruby)
+
+- add do functions to pokemon objects
+- add buttons to fight
