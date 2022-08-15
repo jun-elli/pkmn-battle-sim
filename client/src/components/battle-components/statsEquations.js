@@ -58,16 +58,20 @@ const calculateStats = (base, iv, ev, lvl, nature, stat) => {
 
 const learnLatestsMoves = (moves, lvl) => {
   const learned = [];
-  //filter all moves that are acceptable by lvl and edition
-  let m = moves.filter(
-    (m) =>
-      m.version_group_details.some(
-        (v) => v.version_group.name == "ruby-sapphire"
-      ) &&
-      m.version_group_details.some(
-        (l) => l.level_learned_at <= lvl && l.level_learned_at !== 0
-      )
-  );
+
+  let m = moves.filter((m) => {
+    let i = m.version_group_details.findIndex(
+      (v) => v.version_group.name === "ruby-sapphire"
+    );
+    if (i !== -1) {
+      let rsMove = m.version_group_details[i];
+      if (rsMove.level_learned_at <= lvl && rsMove.level_learned_at !== 0) {
+        return true;
+      }
+    }
+    return false;
+  });
+
   for (let i = 0; i < 4; i++) {
     learned.push(m.pop());
   }
