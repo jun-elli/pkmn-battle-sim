@@ -3,24 +3,14 @@ import { PokemonContext } from "../Battleground";
 
 function PokemonStatusBar({ isEnemy }) {
   const [pkmnOg, setPkmnOg] = useState({});
-  const [pkmnMod, setPkmnMod] = useState({});
 
-  const {
-    myPokemon,
-    enemy,
-    pokemonWithStats,
-    pokemonWithModStats,
-    enemyWithStats,
-    enemyWithModStats,
-  } = useContext(PokemonContext);
+  const { pokemonWithStats, enemyWithStats } = useContext(PokemonContext);
 
   useEffect(() => {
     if (isEnemy) {
       setPkmnOg(enemyWithStats);
-      setPkmnMod(enemyWithModStats);
     } else {
       setPkmnOg(pokemonWithStats);
-      setPkmnMod(pokemonWithModStats);
     }
   }, []);
 
@@ -33,7 +23,7 @@ function PokemonStatusBar({ isEnemy }) {
         <div>
           <div>LVL: {pkmnOg.lvl}</div>
           <div>
-            HP: {pkmnMod.hp} / {pkmnOg && pkmnOg.hp}
+            HP: {pkmnOg.hp} / {pkmnOg && pkmnOg.hp}
           </div>
           <div>Pokemon atk: {pkmnOg && pkmnOg.atk}</div>
           <div>Pokemon def: {pkmnOg && pkmnOg.def}</div>

@@ -56,49 +56,85 @@ const calculateStats = (base, iv, ev, lvl, nature, stat) => {
   );
 };
 
-const generatePokemon = (name, stats, exp, setterOg, setterMod) => {
+const learnLatestsMoves = (moves, lvl) => {
+  const learned = [];
+  //filter all moves that are acceptable by lvl and edition
+  let m = moves.filter(
+    (m) =>
+      m.version_group_details.some(
+        (v) => v.version_group.name == "ruby-sapphire"
+      ) &&
+      m.version_group_details.some(
+        (l) => l.level_learned_at <= lvl && l.level_learned_at !== 0
+      )
+  );
+  for (let i = 0; i < 4; i++) {
+    learned.push(m.pop());
+  }
+
+  return learned;
+};
+
+// Redo function to become a constructor
+const generatePokemon = (apiPokemon, lvl, exp) => {
   let temp = []; //hp, atk, def, spatk, spdef, spd
 
   const nature = generateRandomNature();
   const iv = calculateIV();
   const ev = calculateEV(exp);
-  const lvl = 5;
 
-  for (const stat of stats) {
+  for (const stat of apiPokemon.stats) {
     temp.push(stat.base_stat);
   }
 
-  setterOg({
-    name: name,
+  const pokemon = {
+    apiInfo: apiPokemon,
+    name: apiPokemon.name,
     lvl: lvl,
     exp: exp,
-    hp: calculateTotalHp(temp[0], iv, ev, lvl),
-    atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
-    def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
-    spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
-    spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
-    spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
-    acc: 100,
-    nature: nature,
+    nature: {
+      index: nature,
+      more: natures[nature],
+    },
     iv: iv,
     ev: ev,
-  });
-
-  setterMod({
-    name: name,
-    lvl: lvl,
-    exp: exp,
-    hp: calculateTotalHp(temp[0], iv, ev, lvl),
-    atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
-    def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
-    spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
-    spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
-    spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
-    acc: 100,
-    nature: nature,
-    iv: iv,
-    ev: ev,
-  });
+    isAlive: true,
+    conditions: {
+      isBurned: false,
+      isFrozen: false,
+      isParalyzed: false,
+      isPoisoned: false,
+      isAsleep: false,
+    },
+    stats: {
+      actual: {
+        hp: calculateTotalHp(temp[0], iv, ev, lvl),
+        atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
+        def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
+        spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
+        spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
+        spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
+        acc: 100,
+      },
+      modified: {
+        hp: calculateTotalHp(temp[0], iv, ev, lvl),
+        atk: calculateStats(temp[1], iv, ev, lvl, nature, "atk"),
+        def: calculateStats(temp[2], iv, ev, lvl, nature, "def"),
+        spatk: calculateStats(temp[3], iv, ev, lvl, nature, "spatk"),
+        spdef: calculateStats(temp[4], iv, ev, lvl, nature, "spdef"),
+        spd: calculateStats(temp[5], iv, ev, lvl, nature, "spd"),
+        acc: 100,
+      },
+    },
+    moves: {
+      learned: learnLatestsMoves(apiPokemon.moves, lvl),
+      all: apiPokemon.moves,
+    },
+    // Mising fucntions
+    do: {},
+    sprites: apiPokemon.sprites,
+  };
+  return pokemon;
 };
 
 export {

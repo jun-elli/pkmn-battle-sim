@@ -6,14 +6,7 @@ function ConsoleMenu({}) {
   const [myMoves, setMyMoves] = useState({});
   const [enemyMoves, setEnemyMoves] = useState({});
 
-  const {
-    myPokemon,
-    enemy,
-    pokemonWithStats,
-    pokemonWithModStats,
-    enemyWithStats,
-    enemyWithModStats,
-  } = useContext(PokemonContext);
+  const { pokemonWithStats, enemyWithStats } = useContext(PokemonContext);
 
   return (
     <div className="grid grid-cols-6 border-4">

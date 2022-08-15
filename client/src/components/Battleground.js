@@ -12,9 +12,7 @@ function Battleground() {
   const [enemy, setEnemy] = useState(null);
   // pokemon stats modified according to lvl and combat exp
   const [pokemonWithStats, setPokemonWithStats] = useState({});
-  const [pokemonWithModStats, setPokemonWithModStats] = useState({});
   const [enemyWithStats, setEnemyWithStats] = useState({});
-  const [enemyWithModStats, setEnemyWithModStats] = useState({});
 
   useEffect(() => {
     fetchPkmns();
@@ -30,20 +28,13 @@ function Battleground() {
     setMyPokemon(myPkmn);
     const enemyPkmn = await enemyRes.json();
     setEnemy(enemyPkmn);
-    generatePokemon(
-      myPkmn.name,
-      myPkmn.stats,
-      135,
-      setPokemonWithStats,
-      setPokemonWithModStats
-    );
-    generatePokemon(
-      enemyPkmn.name,
-      enemyPkmn.stats,
-      135,
-      setEnemyWithStats,
-      setEnemyWithModStats
-    );
+
+    let e = generatePokemon(enemyPkmn, 5, 135);
+
+    setEnemyWithStats(e);
+
+    let m = generatePokemon(myPkmn, 5, 135);
+    setPokemonWithStats(m);
   };
 
   return (
@@ -52,9 +43,7 @@ function Battleground() {
         myPokemon,
         enemy,
         pokemonWithStats,
-        pokemonWithModStats,
         enemyWithStats,
-        enemyWithModStats,
       }}
     >
       <div className="bg-grey-custom grid grid-cols-6 grid-rows-4 h-screen place-items-stretch max-w-4xl mx-auto max-h-full">
